@@ -1,8 +1,19 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
 function TripItem({ trip }) {
+  if (!trip || typeof trip !== "object") {
+    console.warn("TripItem received invalid trip:", trip);
+    return null;
+  }
+
+  if (!trip.id) {
+    console.warn("Trip is missing id:", trip);
+    return null;
+  }
+
   return (
-    <div className="col-md-6 col-lg-4 mb-5">
+    <Link to={`/details/${trip.id}`} className="col-md-6 col-lg-4 mb-5">
       <div
         className="portfolio-item mx-auto"
         data-bs-toggle="modal"
@@ -13,9 +24,11 @@ function TripItem({ trip }) {
             <i className="fas fa-plus fa-3x"></i>
           </div>
         </div>
-        <img className="img-fluid" src={trip.img} alt="..." />
+        {trip.img && (
+          <img className="img-fluid" src={trip.img} alt={trip.name || "Trip"} />
+        )}
       </div>
-    </div>
+    </Link>
   );
 }
 
